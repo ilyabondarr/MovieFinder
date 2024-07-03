@@ -1,0 +1,87 @@
+@import "./variables.scss";
+@import "./normalize.scss";
+
+.search-page {
+  padding-top: 155px;
+  &__title {
+    margin-top: 50px;
+    font-size: $fz-title;
+    font-weight: 700;
+    color: $color-text;
+    text-align: center;
+    margin-bottom: $mb;
+  }
+  &__input-box {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 50px;
+  }
+  &__input {
+    width: 500px;
+    height: 60px;
+    border-radius: 12px;
+    font-size: 24px;
+    padding-left: 20px;
+    margin-right: 20px;
+  }
+  &__input::placeholder {
+    color: $body-background;
+  }
+  &__img {
+    max-width: 60px;
+    cursor: pointer;
+  }
+  &__film-info {
+    display: flex;
+    margin-top: 50px;
+    justify-content: center;
+  }
+  &__text {
+    font-size: 44px;
+    color: $color-text;
+    margin-bottom: 30px;
+    margin-right: 50px;
+    line-height: 60px;
+    font-weight: 700;
+  }
+  &__poster {
+    max-width: 600px;
+    height: 450px;
+  }
+  &__small-text {
+    font-size: $smal-text;
+    color: $color-text;
+    margin-bottom: 10px;
+    margin-right: 50px;
+    line-height: 40px;
+  }
+  &__item {
+    margin-bottom: 50px;
+    max-width: 300px;
+  }
+  &__small-title-text {
+    font-size: $small-title;
+    color: $color-text;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+  &__poster-mb {
+    margin-bottom: 30px;
+    max-width: 300px;
+    object-fit: cover;
+  }
+  &__list {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  &__descr-text {
+    font-size: 18px;
+    color: $color-text;
+  }
+  &__length-text {
+    font-size: 18px;
+    color: $color-text;
+    margin-bottom: 30px;
+  }
+}

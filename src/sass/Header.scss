@@ -1,0 +1,30 @@
+@import "./variables.scss";
+@import "./normalize.scss";
+
+.header {
+  position: fixed;
+  width: 100%;
+  border-bottom: 2px solid $orange;
+  z-index: 9999;
+  background: $body-background;
+  &__row {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 0;
+  }
+  &__text {
+    font-size: 24px;
+    font-weight: 700;
+    color: $color-text;
+    cursor: pointer;
+  }
+  &__text.active {
+    color: $orange;
+  }
+  &__input {
+    padding: 5px 20px;
+    font-weight: 700;
+    border: 2px solid #000;
+    border-radius: 12px;
+  }
+}

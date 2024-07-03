@@ -1,0 +1,41 @@
+@import "./variables.scss";
+@import "./normalize.scss";
+
+.news {
+   padding-top: 155px;
+    &__item{
+        position: relative;
+        margin-bottom: 50px;
+        list-style: none;
+        width: 1000px;
+    }
+    &__img{
+        max-width: 700px;
+        filter: brightness(60%)
+    }
+    &__title{
+        font-weight: 700;
+        margin-bottom: 20px;
+        font-size: 28px;
+        color: $image-text;
+        
+    }
+    &__text{
+        color: $image-text;
+        font-size: 16px;
+        line-height: 20px;
+    }
+    &__text-block{
+        max-width: 500px;
+        position: absolute;
+        top: 30px;
+
+        right: 0;
+        
+    }
+    &__row{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
