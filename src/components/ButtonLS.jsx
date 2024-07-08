@@ -20,7 +20,7 @@ const ButtonLS = ({ item }) => {
         ...prevText,
         [item.filmId]: "Удалить из избранного",
       }));
-    } else {
+    } else { 
       films.splice(innerFilms, 1);
       setButtonText((prevText) => ({
         ...prevText,

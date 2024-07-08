@@ -19,14 +19,14 @@ function Favorites() {
   return (
     <section className="favorites">
       <div className="container">
-        <ul className="favorites__list">
+        <ul className="films-list">
           {films.map((film) => (
-            <li className="favorites__item" key={film.id}>
+            <li className="films-list__item" key={film.id}>
               <img
-                className="search-page__poster search-page__poster-mb"
+                className="films-list__poster films-list__poster-mb"
                 src={film.poster}
               />
-              <div className="search-page__small-title-text">{film.name}</div>
+              <div className="films-list__name">{film.name}</div>
               <button
                 className="main-button button--position"
                 onClick={() => removeFavotitesFilm(film)}

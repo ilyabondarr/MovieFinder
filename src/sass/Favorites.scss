@@ -1,21 +1,10 @@
 @import "./variables.scss";
 @import "./normalize.scss";
 
-.favorites{
-    padding-top: 155px;
-    &__list{
-        display: flex;
-        flex-wrap: wrap;
-    }
-    &__item{
-        margin-bottom: 100px;
-        max-width: 300px;
-        margin-right: 20px;
-        position: relative;
-    }
-    
+.favorites {
+  padding-top: 155px;
 }
-.button--position{
-    position: absolute;
-    bottom: -70px;
+.button--position {
+  position: absolute;
+  bottom: -70px;
 }

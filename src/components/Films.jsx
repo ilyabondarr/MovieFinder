@@ -31,19 +31,19 @@ function Films() {
     <>
       <section className="search-page">
         <div className="container">
-          <div className="search-page__input-box">
+          <div className="search-block">
             <input
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="search-page__input"
+              className="search-input"
               placeholder="Введите ID фильма"
             />
 
             <img
               src={icon}
               onClick={handleFetch}
-              className="search-page__img"
+              className="search-img"
               alt="search-icon"
             />
           </div>

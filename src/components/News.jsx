@@ -1,55 +1,91 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import MainFetchs from "./MainFetchs.jsx";
+import Slider from "react-slick";
+import prevArrow from "../assets/prev.png";
+import ButtonLS from "./ButtonLS.jsx";
 
 function News() {
-  const [news, setNews] = useState([]);
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { news, error, isLoading, release } = MainFetchs();
 
-  useEffect(() => {
-    fetch("https://kinopoiskapiunofficial.tech/api/v1/media_posts", {
-      method: "GET",
-      headers: {
-        "X-API-KEY": "2179471a-f640-47bf-8188-eae5ad058394",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((items) => {
-        setNews(items.items);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        setError(error);
-        setIsLoading(false);
-      });
-  }, []);
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 700,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    swipe: true,
+    swipeToSlide: true,
+    draggable: true,
+    prevArrow: (
+      <div className="slick-prev" onClick={() => slickPrev()}>
+        <img src={prevArrow} alt="Previous" />
+      </div>
+    ),
+    nextArrow: (
+      <div className="slick-next" onClick={() => slickNext()}>
+        <img src={prevArrow} alt="Next" />
+      </div>
+    ),
+  };
 
   return (
     <>
-      <div className="news">
-        {isLoading ? (
-          <div className="loading-text">Loading...</div>
-        ) : (
+      {isLoading && <div className="loading-text">Loading...</div>}
+      {news.length > 0 && (
+        <section className="news">
           <div className="container">
             <div className="news__row">
-              {news.map((item) => (
-                <li className="news__item" key={item.kinopoiskId}>
-                  <img
-                    className="news__img"
-                    src={item.imageUrl}
-                    alt={item.title}
-                  />
-                  <div className="news__text-block">
-                    <h3 className="news__title">{item.title}</h3>
-                    <p className="news__text">{item.description}</p>
-                  </div>
-                </li>
-              ))}
+              <Slider {...settings}>
+                {news.map((item) => (
+                  <li className="news__item" key={item.kinopoiskId}>
+                    <img
+                      className="news__img"
+                      src={item.imageUrl}
+                      alt={item.title}
+                    />
+                    <div className="news__text-block">
+                      <h3 className="news__title">{item.title}</h3>
+                      <p className="news__text">{item.description}</p>
+                    </div>
+                  </li>
+                ))}
+              </Slider>
             </div>
           </div>
-        )}
-        {error && <div>Error: {error.message}</div>}
-      </div>
+        </section>
+      )}
+      {release.length > 0 && (
+        <section className="releases">
+          <div className="container">
+            <h1 className="title">Релизы за последний месяц</h1>
+            <ul className="films-list">
+              {release
+                .filter((item) => item.nameRu && item.nameRu.trim() !== "")
+                .map((item) => (
+                  <li className="films-list__item" key={item.filmId}>
+                    <img
+                      className="films-list__poster films-list__poster-mb"
+                      src={item.posterUrlPreview}
+                      alt={item.nameRu}
+                    />
+                    <p className="films-list__name">{item.nameRu}</p>
+
+                    {item.genres.map((genre, index) => (
+                      <p key={index} className="films-list__genre">
+                        {genre.genre}
+                      </p>
+                    ))}
+
+                    <ButtonLS item={item} />
+                  </li>
+                ))}
+            </ul>
+          </div>
+        </section>
+      )}
+      {error && <div>Error: {error.message}</div>}
     </>
   );
 }
