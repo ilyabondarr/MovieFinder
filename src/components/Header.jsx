@@ -10,9 +10,6 @@ export default function Header() {
             <NavLink to="/" className="header__text">
               Главная
             </NavLink>
-            {/* <NavLink to="/films" className="header__text">
-              Фильм по ID
-            </NavLink> */}
             <NavLink to="/keywords" className="header__text">
               Поиск фильма
             </NavLink>
