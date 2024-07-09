@@ -16,9 +16,13 @@ function Favorites() {
     setFilms(films);
     localStorage.setItem(keyName, JSON.stringify(films));
   };
+
   return (
     <section className="favorites">
       <div className="container">
+        {films.length == 0&& (
+          <div className="loading-text">Здесь пока ничего нет</div>
+        )}
         <ul className="films-list">
           {films.map((film) => (
             <li className="films-list__item" key={film.id}>
