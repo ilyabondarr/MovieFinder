@@ -1,19 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { NavLink } from "react-router-dom";
 import icon from "../assets/search-icon.png";
 import ButtonLS from "./ButtonLS.jsx";
 import FetchKeywords from "./FetchKeywords.jsx";
+import { FilmContext } from "./App.jsx";
 
 function Keywords() {
   const [inputValue, setInputValue] = useState("");
-  const { data, isLoading, getFetch } = FetchKeywords();
+  const {  isLoading, getFetch } = FetchKeywords();
+  const { films, selectFilm } = useContext(FilmContext);
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
-
+  const handleFilmClick = (film) => {
+    selectFilm(film);
+  };
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      getFetch(inputValue)
+      getFetch(inputValue);
     }
   };
 
@@ -38,18 +43,26 @@ function Keywords() {
             />
           </div>
           {isLoading && <div className="loading-text">Loading...</div>}
-          {data.length > 0 && (
+
+          {films.length > 0 && (
             <ul className="films-list">
-              {data.map((item) => (
+              {films.map((item) => (
                 <li className="films-list__item" key={item.filmId}>
-                  <img
-                    className="films-list__poster films-list__poster-mb"
-                    src={item.posterUrlPreview}
-                    alt={item.nameRu}
-                  />
-                  <div className="films-list__name">
-                    {item.nameRu}
-                  </div>
+                  <NavLink to={`/film/${item.filmId}`}>
+                    <img
+                    onClick={() => handleFilmClick(item)}
+                      className="films-list__poster-active films-list__poster-mb"
+                      src={item.posterUrlPreview}
+                      alt={item.nameRu}
+                    />
+                  </NavLink>
+                  <div className="films-list__name">{item.nameRu}</div>
+                  {item.genres.map((genre, index) => (
+                      <span key={index} className="films-list__genre">
+                        {genre.genre} 
+                        {index < item.genres.length - 1 ? ', ' : ''}
+                      </span>
+                    ))}
                   <ButtonLS item={item} />
                 </li>
               ))}

@@ -1,1 +1,6 @@
- 
+@mixin poster {
+    width: 250px;
+    height: 350px;
+    border-radius: 12px;
+    object-fit: cover;
+}

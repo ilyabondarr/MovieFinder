@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { FilmContext } from "./App.jsx";
 
 const FetchKeywords = () => {
   const [isLoading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
+  const { setFilmList } = useContext(FilmContext);
 
   const getFetch = (inputValue) => {
     setLoading(true);
@@ -18,8 +19,7 @@ const FetchKeywords = () => {
     )
       .then((res) => res.json())
       .then((result) => {
-        setData(result.films);
-        console.log(data);
+        setFilmList(result.films);
       })
       .catch((error) => console.log("Ошибка", error))
       .finally(() => {
@@ -27,7 +27,7 @@ const FetchKeywords = () => {
       });
   };
 
-  return { data, isLoading, getFetch };
+  return {  isLoading, getFetch };
 };
 
 export default FetchKeywords;

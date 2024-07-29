@@ -4,37 +4,41 @@
 @import "Keywords.scss";
 @import "News.scss";
 @import "Favorites.scss";
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
- 
+@import "FilmInfo.scss";
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
 
-.container{
-    max-width: 1310px;
-    margin: 0 auto;
-    padding: 0 15px;
- }
- .loading-text{
-    font-size: 48px;
-    color: $color-text;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
- }
-.active-page.active{
-   color: $orange;
+.container {
+  max-width: 1310px;
+  margin: 0 auto;
+  padding: 0 15px;
 }
-.main-button{
-   position: absolute;
-   bottom: -60px;
-   left: 0;
-   margin-top: 17px;
-   width: 200px;
-   height: 40px;
-   border-radius: 12px;
-   background-color: #fff;
-   font-size: 14px;
+.loading-text {
+  font-size: 48px;
+  color: $color-text;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.active-page.active {
+  color: $orange;
+}
+.main-button {
+  position: absolute;
+  bottom: -50px;
+  left: 0;
+  margin-top: 17px;
+  width: 200px;
+  height: 40px;
+  border-radius: 12px;
+  background-color: #fff;
+  font-size: 14px;
 }
 .button-active {
-   background: $orange;
-   color: #fff;
- }
+  background: $orange;
+  color: #fff;
+}
+body .slick-prev::before,
+body .slick-next::before {
+  display: none;
+}

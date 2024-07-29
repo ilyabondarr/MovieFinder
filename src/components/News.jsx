@@ -1,18 +1,64 @@
-import React from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
+import ButtonPremieres from "./ButtonPremieres.jsx";
 import MainFetchs from "./MainFetchs.jsx";
 import Slider from "react-slick";
 import prevArrow from "../assets/prev.png";
-import ButtonLS from "./ButtonLS.jsx";
+import { FilmContext } from "./App.jsx";
 
 function News() {
-  const { news, error, isLoading, release } = MainFetchs();
+  const { error, isLoading, setIsLoading, useFetch, fetchPremieres } =
+    MainFetchs();
+  const { newsItems, premieresItem } = useContext(FilmContext);
+  const [currentSlide, setcurrentSlide] = useState(0);
+  const sliderRef = useRef(null);
+  useEffect(() => {
+    const savedcurrentSlide = sessionStorage.getItem("currentSlide");
+    if (savedcurrentSlide !== null) {
+      const currentSlideIndex = parseInt(savedcurrentSlide);
+      setcurrentSlide(currentSlideIndex);
+      if (sliderRef.current) {
+        sliderRef.current.slickGoTo(currentSlideIndex);
+      }
+    }
+  }, []);
+
+  const getcurrentSlide = (currentIndex) => {
+    setcurrentSlide(currentIndex);
+    sessionStorage.setItem("currentSlide", currentIndex);
+  };
 
   const settings = {
+    onTouchEnd: false,
+    onTouchMove: false,
+    onTouchStart: false,
+    dots: false,
+    infinite: true,
+    speed: 600,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    swipe: true,
+    swipeToSlide: true,
+    draggable: true,
+    afterChange: getcurrentSlide,
+    prevArrow: (
+      <div className="slick-prev" onClick={() => slickPrev()}>
+        <img src={prevArrow} alt="Previous" />
+      </div>
+    ),
+    nextArrow: (
+      <div className="slick-next" onClick={() => slickNext()}>
+        <img src={prevArrow} alt="Next" />
+      </div>
+    ),
+  };
+  const settings2 = {
     dots: false,
     infinite: true,
     speed: 700,
-    slidesToShow: 1,
-    slidesToScroll: 1,
+    slidesToShow: 4,
+    slidesToScroll: 4,
     autoplay: true,
     autoplaySpeed: 3000,
     swipe: true,
@@ -30,15 +76,24 @@ function News() {
     ),
   };
 
+  useEffect(() => {
+    if (newsItems.length == 0 || premieresItem.length == 0) {
+      useFetch();
+      fetchPremieres();
+    } else if (newsItems.length > 0 || premieresItem.length > 0) {
+      setIsLoading(false);
+    }
+  }, []);
+
   return (
     <>
       {isLoading && <div className="loading-text">Loading...</div>}
-      {news.length > 0 && (
+      {useFetch && (
         <section className="news">
           <div className="container">
             <div className="news__row">
-              <Slider {...settings}>
-                {news.map((item) => (
+              <Slider ref={sliderRef} {...settings}>
+                {newsItems.map((item) => (
                   <li className="news__item" key={item.kinopoiskId}>
                     <img
                       className="news__img"
@@ -56,31 +111,30 @@ function News() {
           </div>
         </section>
       )}
-      {release.length > 0 && (
-        <section className="releases">
+      {fetchPremieres && (
+        <section className="premieres">
           <div className="container">
-            <h1 className="title">Релизы за последний месяц</h1>
-            <ul className="films-list">
-              {release
-                .filter((item) => item.nameRu && item.nameRu.trim() !== "")
-                .map((item) => (
-                  <li className="films-list__item" key={item.filmId}>
+            <h1 className="title">Кинопремьеры </h1>
+            <ul className="list-premieres">
+              <Slider {...settings2}>
+                {premieresItem.map((item) => (
+                  <li className="films-list__item" key={item.kinopoiskId}>
                     <img
-                      className="films-list__poster films-list__poster-mb"
+                      className="films-list__poster-passive films-list__poster-mb"
                       src={item.posterUrlPreview}
                       alt={item.nameRu}
                     />
                     <p className="films-list__name">{item.nameRu}</p>
-
                     {item.genres.map((genre, index) => (
-                      <p key={index} className="films-list__genre">
+                      <span key={index} className="films-list__genre">
                         {genre.genre}
-                      </p>
+                        {index < item.genres.length - 1 ? ", " : ""}
+                      </span>
                     ))}
-
-                    <ButtonLS item={item} />
+                    <ButtonPremieres item={item} />
                   </li>
                 ))}
+              </Slider>
             </ul>
           </div>
         </section>
