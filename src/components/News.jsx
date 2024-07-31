@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import ButtonPremieres from "./ButtonPremieres.jsx";
-import MainFetchs from "./MainFetchs.jsx";
+import FetchRequests from "./FetchRequests.jsx";
 import Slider from "react-slick";
 import prevArrow from "../assets/prev.png";
 import { FilmContext } from "./App.jsx";
 
 function News() {
-  const { error, isLoading, setIsLoading, useFetch, fetchPremieres } =
-    MainFetchs();
+  const { error, isLoading, setIsLoading, fetchMediaPosts, fetchPremieres } =
+  FetchRequests();
   const { newsItems, premieresItem } = useContext(FilmContext);
   const [currentSlide, setcurrentSlide] = useState(0);
   const sliderRef = useRef(null);
@@ -78,7 +78,7 @@ function News() {
 
   useEffect(() => {
     if (newsItems.length == 0 || premieresItem.length == 0) {
-      useFetch();
+      fetchMediaPosts();
       fetchPremieres();
     } else if (newsItems.length > 0 || premieresItem.length > 0) {
       setIsLoading(false);
@@ -88,7 +88,7 @@ function News() {
   return (
     <>
       {isLoading && <div className="loading-text">Loading...</div>}
-      {useFetch && (
+      {fetchMediaPosts && (
         <section className="news">
           <div className="container">
             <div className="news__row">
@@ -99,6 +99,7 @@ function News() {
                       className="news__img"
                       src={item.imageUrl}
                       alt={item.title}
+                      loading="lazy"
                     />
                     <div className="news__text-block">
                       <h3 className="news__title">{item.title}</h3>
@@ -123,6 +124,7 @@ function News() {
                       className="films-list__poster-passive films-list__poster-mb"
                       src={item.posterUrlPreview}
                       alt={item.nameRu}
+                      loading="lazy"
                     />
                     <p className="films-list__name">{item.nameRu}</p>
                     {item.genres.map((genre, index) => (

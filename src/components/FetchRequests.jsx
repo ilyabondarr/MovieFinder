@@ -1,11 +1,17 @@
-import { useEffect, useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { FilmContext } from "./App.jsx";
 
 const MainFetchs = () => {
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentMonthItem, setCurrentMonth] = useState("");
   const { saveNews, getPremieres } = useContext(FilmContext);
+  const getFilmList = (films) => {
+    sessionStorage.setItem("filmsKeywords", JSON.stringify(films));
+  };
+  const getSitesList = (site) => {
+    sessionStorage.setItem("sites", JSON.stringify(site));
+  };
 
   const fetchPremieres = () => {
     const currentDate = new Date();
@@ -49,7 +55,7 @@ const MainFetchs = () => {
       });
   };
 
-  const useFetch = () => {
+  const fetchMediaPosts = () => {
     setIsLoading(false);
     fetch("https://kinopoiskapiunofficial.tech/api/v1/media_posts", {
       method: "GET",
@@ -69,7 +75,55 @@ const MainFetchs = () => {
       });
   };
 
-  return { error, isLoading, useFetch, fetchPremieres, setIsLoading };
+  const fetchFilmKeywords = (inputValue) => {
+    setIsLoading(true);
+    fetch(
+      `https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${`${inputValue}`}`,
+      {
+        method: "GET",
+        headers: {
+          "X-API-KEY": "2179471a-f640-47bf-8188-eae5ad058394",
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((result) => {
+        getFilmList(result.films);
+      })
+      .catch((error) => console.log("Ошибка", error))
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  const fetchSites = (id) => {
+    setIsLoading(true);
+    fetch(
+      `https://kinopoiskapiunofficial.tech/api/v2.2/films/${id}/external_sources`,
+      {
+        method: "GET",
+        headers: {
+          "X-API-KEY": "2179471a-f640-47bf-8188-eae5ad058394",
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((item) => {
+        getSitesList(item.items);
+        setIsLoading(false);
+      })
+      .catch((error) => console.log("Ошибка", error));
+  };
+  return {
+    error,
+    isLoading,
+    fetchMediaPosts,
+    fetchPremieres,
+    setIsLoading,
+    fetchFilmKeywords,
+    fetchSites,
+  };
 };
 
 export default MainFetchs;

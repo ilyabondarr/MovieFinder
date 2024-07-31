@@ -32,7 +32,7 @@ function Favorites() {
               />
               <div className="films-list__name">{film.name}</div>
               <button
-                className="main-button button--position"
+                className="button--position main-button"
                 onClick={() => removeFavotitesFilm(film)}
               >
                 Убрать из избранного
