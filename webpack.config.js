@@ -27,7 +27,7 @@ module.exports = {
     open: true,
     compress: true,
     hot: true,
-    port: 9000,
+    port: 3001,
   },
   plugins: [
     new HtmlWebpackPlugin({
