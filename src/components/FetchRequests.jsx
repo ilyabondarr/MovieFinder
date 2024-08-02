@@ -5,12 +5,18 @@ const MainFetchs = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [currentMonthItem, setCurrentMonth] = useState("");
+  const [sites, setSites] = useState([]);
+  const [similarsFillms, setSimilarsFilms] = useState([]);
+  const [staffItems, setStaffItems] = useState([]);
+
   const { saveNews, getPremieres } = useContext(FilmContext);
   const getFilmList = (films) => {
     sessionStorage.setItem("filmsKeywords", JSON.stringify(films));
   };
-  const getSitesList = (site) => {
-    sessionStorage.setItem("sites", JSON.stringify(site));
+  const getCurrentFilmFromPremieres = (film) => {
+    localStorage.removeItem("currentFilm");
+    localStorage.setItem("currentFilm", JSON.stringify(film));
+    console.log(film)
   };
 
   const fetchPremieres = () => {
@@ -39,7 +45,7 @@ const MainFetchs = () => {
       {
         method: "GET",
         headers: {
-          "X-API-KEY": "2179471a-f640-47bf-8188-eae5ad058394",
+          "X-API-KEY": " 91062827-bad9-405f-9c57-bd5456e1c1ef",
           "Content-Type": "application/json",
         },
       }
@@ -47,6 +53,7 @@ const MainFetchs = () => {
       .then((res) => res.json())
       .then((item) => {
         getPremieres(item.items);
+        console.log(1)
         setIsLoading(false);
       })
       .catch((error) => {
@@ -60,7 +67,7 @@ const MainFetchs = () => {
     fetch("https://kinopoiskapiunofficial.tech/api/v1/media_posts", {
       method: "GET",
       headers: {
-        "X-API-KEY": "2179471a-f640-47bf-8188-eae5ad058394",
+        "X-API-KEY": " 91062827-bad9-405f-9c57-bd5456e1c1ef",
         "Content-Type": "application/json",
       },
     })
@@ -68,6 +75,8 @@ const MainFetchs = () => {
       .then((items) => {
         saveNews(items.items);
         setIsLoading(false);
+        console.log(1)
+
       })
       .catch((error) => {
         setError("Ошибка", error);
@@ -82,7 +91,7 @@ const MainFetchs = () => {
       {
         method: "GET",
         headers: {
-          "X-API-KEY": "2179471a-f640-47bf-8188-eae5ad058394",
+          "X-API-KEY": " 91062827-bad9-405f-9c57-bd5456e1c1ef",
           "Content-Type": "application/json",
         },
       }
@@ -103,26 +112,88 @@ const MainFetchs = () => {
       {
         method: "GET",
         headers: {
-          "X-API-KEY": "2179471a-f640-47bf-8188-eae5ad058394",
+          "X-API-KEY": " 91062827-bad9-405f-9c57-bd5456e1c1ef",
           "Content-Type": "application/json",
         },
       }
     )
       .then((res) => res.json())
       .then((item) => {
-        getSitesList(item.items);
+        setSites(item.items);
+        console.log(1)
+
         setIsLoading(false);
       })
       .catch((error) => console.log("Ошибка", error));
   };
+  const fetchSimilars = (id) => { 
+    setIsLoading(true);
+    fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/${id}/similars`, {
+      method: "GET",
+      headers: {
+        "X-API-KEY": " 91062827-bad9-405f-9c57-bd5456e1c1ef",
+        "Content-Type": "application/json",
+      },
+    })
+    .then((res) => res.json())
+    .then((item) =>{
+      setSimilarsFilms(item.items);
+      console.log(1)
+
+      setIsLoading(false);
+    })
+    .catch((error) => console.log("Ошибка", error));
+
+  };
+  const fetchStaff = (id) => {
+    setIsLoading(true);
+    fetch(`https://kinopoiskapiunofficial.tech/api/v1/staff?filmId=${id}`, {
+      method: "GET",
+      headers: {
+        "X-API-KEY": " 91062827-bad9-405f-9c57-bd5456e1c1ef",
+        "Content-Type": "application/json",
+      },
+    })
+    .then((res) => res.json())
+    .then((item) => {
+      setStaffItems(item);
+      console.log(1)
+
+      setIsLoading(false);
+    })
+    .catch((error) => console.log("Ошибка", error));
+  }
+  const fetchFilmInfo = (id) => {
+    setIsLoading(true);
+    fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/${id}`, {
+      method: "GET",
+      headers: {
+        "X-API-KEY": " 91062827-bad9-405f-9c57-bd5456e1c1ef",
+        "Content-Type": "application/json",
+      },
+    })
+    .then((res) => res.json())
+    .then((item) => {
+      getCurrentFilmFromPremieres(item);
+      console.log(1)
+
+      setIsLoading(false);
+    })
+  }
   return {
     error,
     isLoading,
+    sites,
+    similarsFillms,
+    staffItems,
     fetchMediaPosts,
     fetchPremieres,
     setIsLoading,
     fetchFilmKeywords,
     fetchSites,
+    fetchSimilars,
+    fetchStaff,
+    fetchFilmInfo,
   };
 };
 

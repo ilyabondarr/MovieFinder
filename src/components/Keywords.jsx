@@ -6,15 +6,12 @@ import FetchRequests from "./FetchRequests.jsx";
 
 function Keywords() {
   const [inputValue, setInputValue] = useState("");
-  const { isLoading, fetchFilmKeywords, fetchSites } = FetchRequests();
+  const { isLoading, fetchFilmKeywords, fetchFilmInfo } = FetchRequests();
 
   const filmList = JSON.parse(sessionStorage.getItem("filmsKeywords"));
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
-  };
-  const handleFilmClick = (film) => {
-    localStorage.setItem("currentFilm", JSON.stringify(film));
   };
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -51,10 +48,9 @@ function Keywords() {
                   <NavLink to={`/film/${item.filmId}`}>
                     <img
                       onClick={() => {
-                        handleFilmClick(item);
-                        fetchSites(item.filmId);
+                        fetchFilmInfo(item.filmId);
                       }}
-                      className="films-list__poster-active films-list__poster-mb"
+                      className="poster-active poster-mb"
                       src={item.posterUrlPreview}
                       alt={item.nameRu}
                       loading="lazy"

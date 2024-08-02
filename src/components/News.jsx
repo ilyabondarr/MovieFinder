@@ -1,13 +1,19 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
+import { NavLink } from "react-router-dom";
 import ButtonPremieres from "./ButtonPremieres.jsx";
 import FetchRequests from "./FetchRequests.jsx";
 import Slider from "react-slick";
-import prevArrow from "../assets/prev.png";
 import { FilmContext } from "./App.jsx";
 
 function News() {
-  const { error, isLoading, setIsLoading, fetchMediaPosts, fetchPremieres } =
-  FetchRequests();
+  const {
+    error,
+    isLoading,
+    setIsLoading,
+    fetchMediaPosts,
+    fetchPremieres,
+    fetchFilmInfo,
+  } = FetchRequests();
   const { newsItems, premieresItem } = useContext(FilmContext);
   const [currentSlide, setcurrentSlide] = useState(0);
   const sliderRef = useRef(null);
@@ -26,7 +32,6 @@ function News() {
     setcurrentSlide(currentIndex);
     sessionStorage.setItem("currentSlide", currentIndex);
   };
-
   const settings = {
     onTouchEnd: false,
     onTouchMove: false,
@@ -43,17 +48,62 @@ function News() {
     draggable: true,
     afterChange: getcurrentSlide,
     prevArrow: (
-      <div className="slick-prev" onClick={() => slickPrev()}>
-        <img src={prevArrow} alt="Previous" />
-      </div>
+      <svg
+        className="slick-prev"
+        width="64"
+        height="64"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g transform="rotate(180 12 12)">
+          <path
+            d="M7 12L12 7L17 12"
+            stroke="#FF9800"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M7 16L12 11L17 16"
+            stroke="#FF9800"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </g>
+      </svg>
     ),
     nextArrow: (
-      <div className="slick-next" onClick={() => slickNext()}>
-        <img src={prevArrow} alt="Next" />
-      </div>
+      <svg
+      className="slick-next"
+      width="64"
+      height="64"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g transform="rotate(180 12 12)">
+        <path
+          d="M7 12L12 7L17 12"
+          stroke="#FF9800"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M7 16L12 11L17 16"
+          stroke="#FF9800"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </g>
+    </svg>
     ),
   };
   const settings2 = {
+    centerMode: true,
     dots: false,
     infinite: true,
     speed: 700,
@@ -65,14 +115,58 @@ function News() {
     swipeToSlide: true,
     draggable: true,
     prevArrow: (
-      <div className="slick-prev" onClick={() => slickPrev()}>
-        <img src={prevArrow} alt="Previous" />
-      </div>
+      <svg
+        className="slick-prev"
+        width="64"
+        height="64"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g transform="rotate(180 12 12)">
+          <path
+            d="M7 12L12 7L17 12"
+            stroke="#FF9800"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M7 16L12 11L17 16"
+            stroke="#FF9800"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </g>
+      </svg>
     ),
     nextArrow: (
-      <div className="slick-next" onClick={() => slickNext()}>
-        <img src={prevArrow} alt="Next" />
-      </div>
+      <svg
+      className="slick-next"
+      width="64"
+      height="64"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g transform="rotate(180 12 12)">
+        <path
+          d="M7 12L12 7L17 12"
+          stroke="#FF9800"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M7 16L12 11L17 16"
+          stroke="#FF9800"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </g>
+    </svg>
     ),
   };
 
@@ -120,12 +214,17 @@ function News() {
               <Slider {...settings2}>
                 {premieresItem.map((item) => (
                   <li className="films-list__item" key={item.kinopoiskId}>
-                    <img
-                      className="films-list__poster-passive films-list__poster-mb"
-                      src={item.posterUrlPreview}
-                      alt={item.nameRu}
-                      loading="lazy"
-                    />
+                    <NavLink to={`/film/${item.kinopoiskId}`}>
+                      <img
+                        className="poster-active poster-mb"
+                        onClick={() => {
+                          fetchFilmInfo(item.kinopoiskId);
+                        }}
+                        src={item.posterUrlPreview}
+                        alt={item.nameRu}
+                        loading="lazy"
+                      />
+                    </NavLink>
                     <p className="films-list__name">{item.nameRu}</p>
                     {item.genres.map((genre, index) => (
                       <span key={index} className="films-list__genre">

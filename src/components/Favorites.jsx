@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import FetchRequests from "./FetchRequests.jsx";
+import { NavLink } from "react-router-dom";
 
 function Favorites() {
   const [films, setFilms] = useState([]);
   const keyName = "films";
-
+  const { fetchFilmInfo } = FetchRequests();
   useEffect(() => {
     const filmsFromStorage = JSON.parse(localStorage.getItem(keyName));
     setFilms(filmsFromStorage || []);
@@ -26,10 +28,15 @@ function Favorites() {
         <ul className="films-list">
           {films.map((film) => (
             <li className="films-list__item" key={film.id}>
-              <img
-                className="films-list__poster-passive films-list__poster-mb"
-                src={film.poster}
-              />
+              <NavLink to={`/film/${film.id}`}>
+                <img
+                  className="poster-active poster-mb"
+                  src={film.poster}
+                  onClick={() => {
+                    fetchFilmInfo(film.id);
+                  }}
+                />
+              </NavLink>
               <div className="films-list__name">{film.name}</div>
               <button
                 className="button--position main-button"

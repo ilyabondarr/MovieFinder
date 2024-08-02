@@ -47,15 +47,20 @@
   content: "";
 }
 .slick-prev {
-  top: 180px;
+  width: 80px;
+  height: 80px;
+  top: 130px;
   z-index: 999;
-  left: -100px;
+  left: -40px;
+  transform: rotate(90deg);
 }
 .slick-next {
-  top: 250px;
-  transform: rotate(180deg);
-  right: -100px;
+  width: 80px;
+  height: 80px;
+  top: 130px;
+  right: -80px;
   z-index: 999;
+  transform: rotate(-90deg);
 }
 
 .title {

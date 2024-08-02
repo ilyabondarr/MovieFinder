@@ -4,3 +4,9 @@
     border-radius: 12px;
     object-fit: cover;
 }
+@mixin film-item {
+    max-width: 230px;
+    position: relative;
+    margin-bottom: 70px;
+    height: 500px;
+}
